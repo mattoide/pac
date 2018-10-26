@@ -70,7 +70,7 @@ public class Giocatore{
     
     public void movimentoSu() {
         this.pacRect.y -= this.spostamento;
-              //System.out.println("diooo");
+              System.out.println("diooo");
     }
 
     public void movimentoGiu() {

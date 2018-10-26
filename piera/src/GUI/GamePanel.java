@@ -59,7 +59,7 @@ public class GamePanel extends JPanel {
 
     private Line linee;
     private Line2D.Double[] linesV;
-private Line2D.Double[] linesO;
+    private Line2D.Double[] linesO;
 
     private Pallino point;
     private ArrayList<Pallino> pallini;
@@ -161,7 +161,6 @@ private Line2D.Double[] linesO;
         }*/
     }
 
-    
     public void disegnaPallini(Graphics g) {
 
         for (int i = 0; i < pallini.size(); i++) {
@@ -196,12 +195,12 @@ private Line2D.Double[] linesO;
     }
 
     public void startThread() {
-        // this.threadGeneratore.start();
+//        this.threadGeneratore.start();
         this.threadCollisioni.start();
         this.threadIncroci.start();
     }
 
-    public class ThreadGeneratore implements Runnable {
+    /*public class ThreadGeneratore implements Runnable {
 
         @Override
         public void run() {
@@ -237,7 +236,7 @@ private Line2D.Double[] linesO;
                 }
             }
         }
-    }
+    }*/
 
     public class ThreadCollisioni implements Runnable {
 
@@ -248,7 +247,7 @@ private Line2D.Double[] linesO;
                 collisioni();
                 mangiaPalline();
                 PacIntersectGhost();
-                
+
             }
             try {
                 Thread.sleep(100);
@@ -272,91 +271,19 @@ private Line2D.Double[] linesO;
                 //System.out.println(valore);
                 if (valore == true) {
                     synchronized (this) {
-                       try {
-                           //pausa.wait(10000);
-                           this.wait(2000);
+                        try {
+                            //pausa.wait(10000);
+                            this.wait(2000);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
-
             }
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
                 Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
-    public class KeyListener extends KeyAdapter {
-
-        @Override
-        public void keyPressed(KeyEvent ke) {
-
-            switch (ke.getKeyCode()) {
-
-                case KeyEvent.VK_RIGHT:
-
-                    if (player.getPacRect().x <= LIMITE_DX_FRAME) {
-
-                        player.PacDx();
-                        player.movimentoDx();
-                        movimentoCorrente = DX;
-
-                    } else {
-                        System.out.println("Errore: limite destro del Frame raggiunto");
-                    }
-
-                    collisione = false;
-                    break;
-
-                case KeyEvent.VK_LEFT:
-
-                    if (player.getPacRect().x >= LIMITE_SX_FRAME) {
-
-                        player.PacSx();
-                        player.movimentoSx();
-                        movimentoCorrente = SX;
-
-                    } else {
-                        //System.out.println("Errore");
-                    }
-                    collisione = false;
-                    break;
-
-                case KeyEvent.VK_UP:
-
-                    player.PacSu();
-
-                    if (player.getPacRect().y >= LIMITE_SU_FRAME) {
-
-                        player.movimentoSu();
-                        movimentoCorrente = SU;
-                       
-                    } else {
-                        //System.out.println("Errore");
-                    }
-                    collisione = false;
-
-                    break;
-
-                case KeyEvent.VK_DOWN:
-
-                    player.PacGiu();
-
-                    if (player.getPacRect().y <= LIMITE_GIU_FRAME) {
-
-                        player.movimentoGiu();
-                        movimentoCorrente = GIU;
-
-                    } else {
-                        //System.out.println("Errore");
-                    }
-
-                    collisione = false;
-                    break;
             }
         }
     }
@@ -405,16 +332,6 @@ private Line2D.Double[] linesO;
         }
     }
 
-    public class MouseListener extends MouseAdapter {
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            Point p = e.getPoint();
-
-            System.out.println(p);
-        }
-    }
-
     public void PacIntersectGhost() {
         if (player.getPacRect().intersects(rosso.getRect())) {
             player.restart();
@@ -437,5 +354,84 @@ private Line2D.Double[] linesO;
         }
 
         return vitePlayer;
+    }
+
+    public class KeyListener extends KeyAdapter {
+
+        @Override
+        public void keyPressed(KeyEvent ke) {
+
+            switch (ke.getKeyCode()) {
+
+                case KeyEvent.VK_RIGHT:
+
+                    if (player.getPacRect().x <= LIMITE_DX_FRAME) {
+
+                        player.PacDx();
+                        player.movimentoDx();
+                        movimentoCorrente = DX;
+
+                    } else {
+                        System.out.println("Errore: limite destro del Frame raggiunto");
+                    }
+
+                    collisione = false;
+                    break;
+
+                case KeyEvent.VK_LEFT:
+
+                    if (player.getPacRect().x <= LIMITE_SX_FRAME) {
+
+                        player.PacSx();
+                        player.movimentoSx();
+                        movimentoCorrente = SX;
+
+                    } else {
+                        System.out.println("Errore");
+                    }
+                    collisione = false;
+                    break;
+
+                case KeyEvent.VK_UP:
+                  
+                    if (player.getPacRect().y <= LIMITE_SU_FRAME) {
+
+                        player.PacSu();
+                        player.movimentoSu();
+                        movimentoCorrente = SU;
+
+                    } else {
+                        //System.out.println("Errore");
+                    }
+                    collisione = false;
+
+                    break;
+
+                case KeyEvent.VK_DOWN:
+
+                    if (player.getPacRect().y <= LIMITE_GIU_FRAME) {
+
+                        player.PacGiu();
+                        player.movimentoGiu();
+                        movimentoCorrente = GIU;
+
+                    } else {
+                        //System.out.println("Errore");
+                    }
+
+                    collisione = false;
+                    break;
+            }
+        }
+    }
+
+    public class MouseListener extends MouseAdapter {
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            Point p = e.getPoint();
+
+            System.out.println(p);
+        }
     }
 }
